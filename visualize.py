@@ -9,7 +9,7 @@ def main(args):
 
     env.seed(1)
 
-    evaluate_scorer = evaluate_on_environment(env, n_trials=100, render=True) ## 학습되고 나서 해당 환경에서 reward 얼마나 받는지
+    evaluate_scorer = evaluate_on_environment(env, n_trials=100, render=True)
 
     encoder = d3rlpy.models.encoders.VectorEncoderFactory(hidden_units = args.CQL_size)
 

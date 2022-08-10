@@ -10,13 +10,11 @@ import tensorflow as tf
 
 import time
 
-import wandb
-
 from variational_koopman.replay_memory import ReplayMemory
 from variational_koopman.variational_koopman_model import VariationalKoopman
 # from utils import visualize_predictions, perform_rollouts
 
-def training(args, x, u, state_dim, act_dim, dvk_model_train = False, config = {}, logging = False, dvk_model_dir="", random_seed=1):
+def training(args, x, u, state_dim, act_dim, dvk_model_train = False, dvk_model_dir="", random_seed=1):
     # Set random seed
     np.random.seed(random_seed)
     # Test
@@ -32,37 +30,17 @@ def training(args, x, u, state_dim, act_dim, dvk_model_train = False, config = {
     # Construct model
     net = VariationalKoopman(args)
 
-    # For logging
-    config['num_epochs'] = args.num_epochs
-    config['learning_rate'] = args.learning_rate
-    config['decay_rate'] = args.decay_rate
-    config['l2_reg'] = args.l2_regularizer
-    config['grad_clip'] = args.grad_clip
-    config['batch_size'] = args.batch_size
-    config['kl_weight'] = args.kl_weight
-    config['extractor_size'] = args.extractor_size
-    config['inference_size'] = args.inference_size
-    config['prior_size'] = args.prior_size
-    config['rnn_size'] = args.rnn_size
-    config['transform_size'] = args.transform_size
-    config['reg_weight'] = args.reg_weight
-    config['random_seed'] = random_seed
-    config['latent_dim'] = args.latent_dim
-
     # Begin training
     if not dvk_model_train:
         epoch = 0 # We do not train because we will load trained dvk model
     else:
-        if logging:
-            wandb.init(project = config['env_name'] + '_DVK',
-                config = config)
 
-        epoch = train(args, net, x, u, logging, dvk_model_dir, random_seed) ## we get epoch value because train will automatically end when the loss doesnot further decrease
+        epoch = train(args, net, x, u, dvk_model_dir, random_seed) ## we get epoch value because train will automatically end when the loss doesnot further decrease
 
     return net, epoch, args
 
 # Train network
-def train(args, net, x, u, logging, dvk_model_dir, random_seed):
+def train(args, net, x, u, dvk_model_dir, random_seed):
     np.random.seed(random_seed)
     # Begin tf session
     with tf.Session() as sess:
@@ -187,14 +165,6 @@ def train(args, net, x, u, logging, dvk_model_dir, random_seed):
                     end = time.time()
                     b += 1
 
-                    # Logging
-                    if logging:
-                        log_dict = dict()
-                        log_dict['training_loss'] = out[0]
-                        log_dict['kl_loss'] = out[1]
-                        log_dict['pred_loss'] = out[2]
-                        wandb.log(log_dict)
-
                     # Print loss
                     if (e * replay_memory.n_batches_train + b) % 1000 == 0 and b > 0:
                         print("{}/{} (epoch {}), train_loss = {:.3f}, time/batch = {:.3f}" \
@@ -216,12 +186,6 @@ def train(args, net, x, u, logging, dvk_model_dir, random_seed):
                 # Evaluate loss on validation set
                 score = val_loss(kl_weight)
                 print('Validation Loss: {0:f}'.format(score))
-
-                # Logging
-                if logging:
-                    log_dict = dict()
-                    log_dict['val_loss'] = score
-                    wandb.log(log_dict)
 
                 b = 0
 
