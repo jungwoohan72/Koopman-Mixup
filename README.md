@@ -18,7 +18,7 @@ pip install dm_control
 
 4. Install d4rl
 ```python
-cd d4rl/d4rl
+cd d4rl
 pip install -e .
 ```
 
