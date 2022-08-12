@@ -18,11 +18,6 @@ pip install dm_control
 
 4. Install d4rl
 ```python
-git clone https://github.com/rail-berkeley/d4rl.git
-```
-- In order to use the novel datasets, replace gym_mujoco folder with the attached version.
-
-```python
 cd d4rl
 pip install -e .
 ```
