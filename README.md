@@ -73,5 +73,5 @@ conda install -c conda-forge scikit-learn
 conda install -c conda-forge progressbar
 ```
 ***
-* Implementation of DVK model is forked from the official github page. (Original Implementation https://github.com/sisl/variational_koopman)
-* Original D4RL code is modified to include two novel datasets: reacher-medium-v0, swimmer-medium-v0 (Original Implementation: https://github.com/rail-berkeley/d4rl) 
+Implementation of DVK model is forked from the official github page. (Original Implementation https://github.com/sisl/variational_koopman)
+Original D4RL code is modified to include two novel datasets: reacher-medium-v0, swimmer-medium-v0 (Original Implementation: https://github.com/rail-berkeley/d4rl) 
