@@ -1,5 +1,5 @@
-# Koopman-Mixup
-Mixup data augmentation in Koopman invariant subspace
+# Koopman-Mixup (K-mixup)
+Environment setup for K-mixup
 
 1. Create new conda environment
 ```python
