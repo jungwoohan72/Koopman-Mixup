@@ -1,3 +1,5 @@
+Paper Link: https://www.sciencedirect.com/science/article/abs/pii/S0957417423006383
+
 # Koopman-Mixup (K-mixup)
 Environment setup for K-mixup
 
